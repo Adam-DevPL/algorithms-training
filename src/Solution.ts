@@ -7,16 +7,19 @@ export class Solution {
     if (!this.validateNumbers(ranks)) {
       throw new Error("Rank should be an integer and higher then 0!");
     }
-    ranks.sort(this.sort);
+    // ranks.sort(this.sort);
+    const sortedRanks: number[] = this.quickSort(ranks, 0, ranks.length - 1);
+    console.log(sortedRanks);
+    
     let soldiersWhoCanReport = 0;
     let soldiersCount = 0;
 
-    for (let i = 0, j = 1; j < ranks.length; i++, j++) {
-      if (ranks[i] === ranks[j]) {
+    for (let i = 0, j = 1; j < sortedRanks.length; i++, j++) {
+      if (sortedRanks[i] === sortedRanks[j]) {
         soldiersCount++;
         continue;
       }
-      if (ranks[i] + 1 === ranks[j]) {
+      if (sortedRanks[i] + 1 === sortedRanks[j]) {
         soldiersWhoCanReport += soldiersCount + 1;
       }
       soldiersCount = 0;
@@ -65,6 +68,42 @@ export class Solution {
   };
 
   private sort = (a: number, b: number) => a - b;
+
+  private quickSort = (
+    ranks: number[],
+    start: number = 0,
+    end: number = ranks.length
+  ): number[] => {
+    if (start < end) {
+      let p = this.partition(ranks, start, end);
+      this.quickSort(ranks, start, p - 1);
+      this.quickSort(ranks, p + 1, end);
+    }
+    return ranks;
+  };
+
+  private partition = (
+    ranks: number[],
+    start: number = 0,
+    end: number = ranks.length
+  ): number => {
+    let pivot = ranks[start];
+    let swapIndex = start;
+    for (let i = start + 1; i < end; i++) {
+      if (ranks[i] < pivot) {
+        swapIndex++;
+        this.swap(ranks, i, swapIndex);
+      }
+    }
+    this.swap(ranks, start, swapIndex);
+    return swapIndex;
+  };
+
+  private swap = (ranks: number[], i: number, j: number): void => {
+    let temp = ranks[i];
+    ranks[i] = ranks[j];
+    ranks[j] = temp;
+  };
 
   private validateNumbers = (numbers: number[]): boolean => {
     for (const number of numbers) {
