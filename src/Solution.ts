@@ -1,16 +1,11 @@
-type StrCost = {
-  [key: string]: number;
-};
-
 export class Solution {
   report = (ranks: number[]): number => {
     if (!this.validateNumbers(ranks)) {
       throw new Error("Rank should be an integer and higher then 0!");
     }
-    // ranks.sort(this.sort);
     const sortedRanks: number[] = this.quickSort(ranks, 0, ranks.length - 1);
     console.log(sortedRanks);
-    
+
     let soldiersWhoCanReport = 0;
     let soldiersCount = 0;
 
@@ -56,7 +51,7 @@ export class Solution {
       }
 
       if (strCost.length > 1) {
-        let indexMax: number = strCost.indexOf(Math.max(...strCost));
+        const indexMax: number = strCost.indexOf(Math.max(...strCost));
         minCost += strCost.reduce((total, value, index) =>
           index !== indexMax ? total + value : total
         );
@@ -67,15 +62,13 @@ export class Solution {
     return minCost;
   };
 
-  private sort = (a: number, b: number) => a - b;
-
   private quickSort = (
     ranks: number[],
-    start: number = 0,
-    end: number = ranks.length
+    start = 0,
+    end = ranks.length
   ): number[] => {
     if (start < end) {
-      let p = this.partition(ranks, start, end);
+      const p = this.partition(ranks, start, end);
       this.quickSort(ranks, start, p - 1);
       this.quickSort(ranks, p + 1, end);
     }
@@ -84,10 +77,10 @@ export class Solution {
 
   private partition = (
     ranks: number[],
-    start: number = 0,
-    end: number = ranks.length
+    start = 0,
+    end = ranks.length
   ): number => {
-    let pivot = ranks[start];
+    const pivot = ranks[start];
     let swapIndex = start;
     for (let i = start + 1; i < end; i++) {
       if (ranks[i] < pivot) {
@@ -100,7 +93,7 @@ export class Solution {
   };
 
   private swap = (ranks: number[], i: number, j: number): void => {
-    let temp = ranks[i];
+    const temp = ranks[i];
     ranks[i] = ranks[j];
     ranks[j] = temp;
   };
